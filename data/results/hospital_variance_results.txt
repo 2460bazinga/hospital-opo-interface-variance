@@ -1,0 +1,136 @@
+======================================================================
+HOSPITAL-LEVEL VARIANCE ANALYSIS
+======================================================================
+======================================================================
+LOADING DATA
+======================================================================
+MSC cohort: 88,237
+OPOs: 6
+Hospitals: 519
+
+======================================================================
+VARIANCE DECOMPOSITION
+======================================================================
+
+Hospitals with 20+ referrals: 312
+Total variance in hospital approach rates: 0.0115
+Range: 0.0% - 59.1%
+
+--- VARIANCE DECOMPOSITION ---
+Between-OPO variance: 0.0046
+Within-OPO variance:  0.0086
+ICC: 0.348
+
+35% between-OPO, 65% within-OPO (hospital-level)
+
+======================================================================
+WITHIN-OPO HOSPITAL VARIANCE
+======================================================================
+
+OPO1: 79 hospitals
+  Mean: 22.4%, Std: 8.0%
+  Range: 4.0% - 41.1%
+
+OPO2: 43 hospitals
+  Mean: 12.0%, Std: 8.1%
+  Range: 0.0% - 40.7%
+
+OPO3: 19 hospitals
+  Mean: 11.8%, Std: 6.9%
+  Range: 4.0% - 33.8%
+
+OPO4: 92 hospitals
+  Mean: 21.6%, Std: 9.9%
+  Range: 0.0% - 42.9%
+
+OPO5: 39 hospitals
+  Mean: 28.0%, Std: 12.6%
+  Range: 7.7% - 59.1%
+
+OPO6: 40 hospitals
+  Mean: 13.2%, Std: 9.2%
+  Range: 1.4% - 57.1%
+
+======================================================================
+OPO-HOSPITAL PERFORMANCE GAPS
+======================================================================
+OPO-Hospital pairs with 30+ referrals: 287
+
+OPO1 (71 hospitals):
+  Best: 41.1%, Worst: 4.0%, Gap: 37.1%
+  If all at best: +3490 approaches
+
+OPO2 (40 hospitals):
+  Best: 40.7%, Worst: 0.0%, Gap: 40.7%
+  If all at best: +2802 approaches
+
+OPO3 (18 hospitals):
+  Best: 33.8%, Worst: 4.0%, Gap: 29.8%
+  If all at best: +1624 approaches
+
+OPO4 (85 hospitals):
+  Best: 42.9%, Worst: 2.0%, Gap: 40.9%
+  If all at best: +4498 approaches
+
+OPO5 (36 hospitals):
+  Best: 59.1%, Worst: 7.7%, Gap: 51.4%
+  If all at best: +3566 approaches
+
+OPO6 (37 hospitals):
+  Best: 30.1%, Worst: 1.4%, Gap: 28.7%
+  If all at best: +2297 approaches
+
+--- SUMMARY ---
+Average within-OPO gap: 38.1%
+Total missed approaches: 18,279
+
+======================================================================
+OUTCOME TEST: Do high-approach hospitals have worse conversion?
+======================================================================
+Approached patients: 17,453
+
+Corr(hosp approach rate, tx rate|approached): 0.121
+
+Regression: tx ~ hosp_approach_rate + controls
+  Coef: 0.0162, p=0.6559
+  -> No evidence of adverse selection at high-approach hospitals
+
+======================================================================
+HOSPITAL-LEVEL IV (within OPO)
+======================================================================
+N: 87,195
+
+First-stage F: 589.5 (STRONG)
+OLS: 0.2319
+IV:  0.2080 (SE=0.0308)
+95% CI: (0.1477, 0.2683)
+
+======================================================================
+CONCLUSIONS
+======================================================================
+
+1. VARIANCE DECOMPOSITION
+   ICC = 0.348
+   65% of variance is WITHIN-OPO (between hospitals)
+   -> Same OPO treats hospitals very differently
+
+2. WITHIN-OPO GAPS
+   Average gap (best vs worst hospital): 38.1%
+   Total missed approaches: 18,279
+
+3. OUTCOME TEST
+   High-approach hospitals do NOT have worse outcomes
+   -> Not selection bias, real coordination constraint
+
+4. HOSPITAL IV (within OPO)
+   F-stat: 589.5
+   IV estimate: 0.2080
+   -> Causal effect confirmed at hospital level
+
+BOTTOM LINE:
+The sorting loss is a COORDINATION problem at the hospital-OPO interface.
+Variance WITHIN OPOs (across hospitals) is substantial.
+This cannot be explained by OPO policy alone - it's relationship-specific.
+
+
+Saved: hospital_approach_rates.csv, opo_hospital_gaps.csv

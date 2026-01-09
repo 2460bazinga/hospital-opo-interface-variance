@@ -1,0 +1,8 @@
+Method,Variable,ORCHID,OSR,Statistic,Assessment
+SMD,Log Referral Volume,2.28,2.15,d=+0.24,Pass
+SMD,Within-OPO CV,0.76,1.57,d=-2.04,Fail
+TOST,ICC Equivalence,0.174,0.069,p=1.000,Fail
+B-index,Hospital Size,-,-,B=0.89,Pass
+B-index,Within-OPO CV,-,-,B=0.05,Fail
+Replication,Within-OPO Var > 75%,82.6%,93.1%,Both > 75%,Pass
+Replication,Vol-Eff Corr Positive,100%,98%,Both > 90%,Pass

@@ -1,0 +1,204 @@
+======================================================================
+THE COORDINATION CONSTRAINT IN DECEASED ORGAN PROCUREMENT
+A Causal Decomposition Analysis
+======================================================================
+
+================================================================================
+IMPORTANT: TEMPORAL CONTEXT
+================================================================================
+This analysis uses ORCHID data from 2015-2021.
+
+The organ procurement landscape has TRANSFORMED since then:
+  - Referrals: ~180,000/year → 1,156,611/year (6.4x increase)
+  - DCD share: ~20-25% → 43%
+  - NRP and advanced perfusion have expanded candidacy
+
+INTERPRETATION GUIDANCE:
+  ✓ VALID: Mechanisms demonstrated (coordination variance, IV causality)
+  ✓ VALID: Percentage-based findings (within ORCHID sample)
+  ✗ INVALID: Absolute extrapolations to 2024+
+  ? REQUIRES VALIDATION: Whether magnitudes persist in current landscape
+================================================================================
+
+Analysis started: 2026-01-08T00:17:03.459483
+
+======================================================================
+DATA LOADING
+======================================================================
+Loaded: 133,101 referrals
+OPOs: 6, Hospitals: 557
+Years: 2015-2021
+Hash: b22dbfa99a7e8d2b
+
+======================================================================
+SAMPLE FLOW (STROBE)
+======================================================================
+Initial: 133,101 (100.0%)
+Age: 93,987 (70.6%)
+BMI: 88,237 (66.3%)
+
+======================================================================
+PRIMARY ANALYSIS: SHAPLEY DECOMPOSITION
+======================================================================
+
+Computing bootstrap CIs...
+
+MSC Cohort (ORCHID 2015-2021) (Age 0-70, BMI 15.0-45.0)
+  N: 88,237 → 8,357 transplanted
+  Loss: 79,880
+
+  Conditional Rates:
+    Sorting:        19.9%
+    Authorization:  62.8%
+    Procurement:    79.9%
+    Placement:      94.8%
+
+  Shapley Attribution:
+    Sorting:        63.8% (95% CI: 63.3-64.3%)
+    Authorization:  22.3%
+    Procurement:    11.2%
+    Placement:       2.8%
+
+======================================================================
+PATHWAY STRATIFICATION (DBD vs DCD)
+======================================================================
+NOTE: DCD landscape has transformed since ORCHID era (20% → 43% share)
+
+DBD:
+  N: 10,705
+  Approach rate: 94.4%
+  Shapley - Sorting: 12.9%, Auth: 56.5%
+  Bottleneck: Authorization
+
+DCD:
+  N: 77,532
+  Approach rate: 9.6%
+  Shapley - Sorting: 50.2%, Auth: 25.6%
+  Bottleneck: Sorting
+  ⚠️  DCD landscape has transformed since 2015-2021
+
+======================================================================
+VARIANCE DECOMPOSITION
+======================================================================
+
+Hospitals analyzed: 312
+ICC: 0.348
+  Between-OPO: 35%
+  Within-OPO:  65%
+
+Avg within-OPO gap: 42.9%
+
+→ INTERPRETATION: Majority of variance is WITHIN-OPO,
+  indicating coordination constraints at hospital-OPO interface.
+
+======================================================================
+FALSIFICATION TEST
+======================================================================
+Correlation (hosp approach rate, TX rate): 0.121
+Regression coef: 0.0162 (p=0.656)
+→ No adverse selection
+
+======================================================================
+INSTRUMENTAL VARIABLE ANALYSIS
+======================================================================
+
+OPO-Level IV
+  Instrument: OPO mean approach rate
+  N: 88,237
+  First-stage F: 1273.1 (Strong)
+  OLS: 0.2288 (SE: 0.0024)
+  IV:  0.2297 (SE: 0.0212)
+  95% CI: (0.1882, 0.2713)
+
+Hospital-Level IV (within OPO)
+  Instrument: Hospital approach rate + OPO FE
+  N: 87,284
+  First-stage F: 575.0 (Strong)
+  OLS: 0.2317 (SE: 0.0024)
+  IV:  0.1991 (SE: 0.0312)
+  95% CI: (0.1380, 0.2603)
+
+======================================================================
+COUNTERFACTUAL ANALYSIS
+======================================================================
+⚠️  These estimates apply ONLY to ORCHID sample (2015-2021)
+⚠️  Do NOT extrapolate to present day
+
+Primary: All OPOs at best-performer approach rate
+  SCOPE: ORCHID sample 2015-2021 ONLY
+  Current rate: 19.9% → Target: 26.3%
+  Additional TX in sample: 1,117
+  Improvement: 13.4%
+
+  ⚠️  CAVEAT: NOT extrapolatable to 2024+. Field has transformed (6.4x referral growth, DCD expansion, NRP adoption).
+
+======================================================================
+TEMPORAL CONTEXT: HOW THE FIELD HAS CHANGED
+======================================================================
+
+ORCHID Era (2015-2021):
+  - ~19,000 referrals/year (6 OPOs)
+  - ~180,000 extrapolated national
+  - DCD share: ~20%
+
+Current (2024):
+  - 1,156,611 referrals/year
+  - Growth factor: 6.4x
+  - DCD share: 43%
+
+Key changes since ORCHID:
+  -   • NRP (Normothermic Regional Perfusion) adoption
+  • Advanced perfusion technologies
+  • Expanded DCD criteria
+  • Hospital partnerships and referral protocols
+
+⚠️  Absolute numbers from ORCHID should NOT be extrapolated to present
+
+
+======================================================================
+SUMMARY OF FINDINGS
+======================================================================
+
+WHAT THIS ANALYSIS DEMONSTRATES (valid):
+
+1. SHAPLEY DECOMPOSITION
+   Sorting accounts for 63.8% of loss
+   (95% CI: 63.3-64.3%)
+   
+2. COORDINATION CONSTRAINT MECHANISM
+   ICC = 0.348 → 65% of variance is WITHIN-OPO
+   Same OPO treats different hospitals very differently
+   
+3. CAUSAL EFFECT (IV)
+   Each approach → 19.9% TX probability
+   (95% CI: 13.8-26.0%)
+   First-stage F = 575 (strong instrument)
+   
+4. NO ADVERSE SELECTION
+   High-approach hospitals do NOT have worse outcomes
+   → Coordination constraint, not selection bias
+
+5. WITHIN-SAMPLE COUNTERFACTUAL
+   In ORCHID (2015-2021): ~13% improvement possible
+   ⚠️  NOT extrapolatable to 2024+
+
+WHAT THIS ANALYSIS DOES NOT CLAIM:
+   ✗ Specific number of donors "lost" nationally in 2024
+   ✗ That ORCHID-era magnitudes persist today
+   ✗ That DCD findings apply to current DCD landscape
+
+CONCLUSION:
+   Coordination infrastructure is a demonstrated mechanism of donor loss.
+   The STRUCTURAL finding—hospital-OPO variance—is likely to persist,
+   though absolute magnitudes require contemporary validation.
+
+
+======================================================================
+SAVING OUTPUTS
+======================================================================
+Outputs saved to: coordination_analysis_outputs
+
+======================================================================
+COMPLETE
+======================================================================
+Duration: 140.7s

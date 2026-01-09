@@ -1,0 +1,5 @@
+Test,ORCHID,OSR,Diff,Similar
+ICC Value,0.174,0.069,+0.105,True
+Within-OPO CV,0.764,1.573,2.1x,False
+Vol-Eff Corr,0.151,0.496,-0.345,False
+Zero-Conv Rate,6.7%,51.6%,+44.9pp,False

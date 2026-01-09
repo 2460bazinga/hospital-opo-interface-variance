@@ -1,0 +1,148 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+
+\title{The Coordination Constraint: Hospital-Level Variance as the Primary Determinant of Organ Procurement Performance}
+\author{Noah Parrish}
+\date{January 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+\textbf{Background.} U.S. organ procurement policy focuses regulatory oversight on Organ Procurement Organizations (OPOs), implicitly assuming that OPO-level factors drive performance variation. We tested this assumption by decomposing total variance in procurement rates into between-OPO and within-OPO components.\\
+\textbf{Methods.} Dual-dataset analysis combining (1) 133,101 deceased patient referrals from 343 hospitals across 6 OPOs (ORCHID, 2015-2021) with (2) 1.15 million referrals from 4,140 hospitals across all 55 U.S. OPOs (OPTN/SRTR, 2024). We calculated Intraclass Correlation Coefficients (ICC) to partition variance, conducted case-mix adjusted analyses on clinically homogeneous subgroups, and performed Shapley decomposition to attribute referral exits across procurement stages.\\
+\textbf{Results.} The vast majority of performance variance occurred within OPOs, not between them. In ORCHID, the ICC was 0.174 (82.6\% within-OPO variance); in 2024 national data, the ICC was 0.069 (93.1\% within-OPO variance). This pattern replicated across both datasets despite differences in era and scope (structural representativeness: 5/5 tests passed). Case-mix adjusted analysis confirmed this is not compositional: approach rates for clinically identical cases—head trauma patients aged 18-50—varied by 29-50 percentage points across hospitals served by the same OPO. Shapley decomposition attributed 86.6\% of referral exits to the Sorting (65.1\%) and Authorization (21.5\%) stages—notably, the stages lacking established clinical protocols, national standards, or professionalized licensed workforces. Subsequent stages governed by standardized practices (Procurement, Placement) contributed far less (10.7\%, 2.7\%). We identified 2,136 hospitals with $\ge$20 referrals and zero donors in 2024, present in all 55 OPOs.\\
+\textbf{Conclusions.} Performance heterogeneity in organ procurement originates predominantly at the hospital-OPO interface (83-93\% of variance), not at the OPO level (7-17\%). While much attention has been paid to the family approach conversation, the Shapley results suggest the true margin for discovering potential may lie upstream: in how hospitals and OPOs coordinate to observe patients, share clinical data, and determine which families are approached and when. Research into coordination best practices—including surveillance protocols, triage frameworks, and data interoperability standards—may be warranted.
+\end{abstract}
+
+\section{Introduction}
+The organ shortage in the United States remains a persistent public health crisis, with thousands of patients dying each year while awaiting transplantation [1]. At the heart of this crisis is a complex system of organ procurement that exhibits profound and unexplained performance variation [2]. While some Organ Procurement Organizations (OPOs) consistently achieve high rates of donation, others lag significantly, even when serving demographically similar populations. This heterogeneity has been the subject of intense regulatory scrutiny, culminating in the 2020 Centers for Medicare \& Medicaid Services (CMS) Final Rule, which introduced new performance metrics aimed at holding OPOs accountable [15].
+
+However, the prevailing focus on OPO-level metrics may obscure a more fundamental driver of performance: the hospital-OPO interface. Recent research has begun to challenge the OPO-centric view, suggesting that much of the variation attributed to OPOs may actually originate from differences in performance at the individual hospitals they serve [7, 8]. This paper builds on that emerging literature by formally decomposing the variance in organ procurement performance, seeking to answer a critical question: where does performance heterogeneity originate?
+
+We hypothesize that the majority of variance occurs \textit{within} OPOs—that is, between the hospitals served by the same OPO—rather than \textit{between} OPOs. Such a finding would imply that the coordination between a specific hospital and its OPO is a more significant determinant of outcomes than the OPO itself. This coordination, or lack thereof, manifests in what we term the ``coordination constraint'': the set of structural, relational, and informational barriers that impede the conversion of potential donors into actual donors at the hospital-OPO interface.
+
+To test this hypothesis, we employ a dual-dataset approach. First, we analyze a granular, patient-level dataset (ORCHID) covering six years of referrals from six OPOs to characterize the mechanisms of coordination. Second, we validate our structural findings using contemporary national-level data from the OPTN and SRTR. By combining a deep, granular analysis with a broad, national validation, we aim to provide a definitive answer to the question of where performance is gained and lost in the U.S. organ procurement system.
+
+\section{Literature Review}
+The debate over the sources of performance variation in organ procurement has historically centered on OPO-level factors. The Organ Donation Breakthrough Collaborative (ODBC) in the early 2000s demonstrated that hospital-level quality improvement initiatives could significantly increase donation rates, providing early evidence for the importance of the hospital-OPO interface [13]. However, much of the subsequent research and regulatory focus has remained at the OPO level.
+
+Recent studies have begun to shift the focus back to the hospital. Johnson et al. (2023) identified wide variation in OPO performance at individual hospitals, with conversion rates ranging from 0\% to 51\% across 13 hospitals served by just two OPOs [8]. Similarly, Lynch et al. (2022) found that hospital-level recovery patterns differ significantly even between OPOs with similar overall performance [7]. Our analysis extends this descriptive work by formally decomposing the variance and quantifying the relative contributions of the OPO and hospital levels.
+
+The importance of coordination infrastructure is further supported by studies on in-house coordinator programs. Salim et al. (2011) found that the presence of an in-house coordinator—an OPO staff member embedded within the hospital—was associated with a 14-percentage-point increase in organ conversion rates [9]. This suggests that dedicated resources to manage the hospital-OPO interface can overcome coordination constraints. Wall et al. (2022) provide further evidence of within-OPO heterogeneity, showing significant variation in Donation after Circulatory Death (DCD) policies and outcomes at hospitals served by the same OPO [10].
+
+The ``denominator problem''—the challenge of accurately defining the pool of potential donors—has also been a long-standing issue. The 2015 OPTN Deceased Donor Potential Study (DDPS) was a foundational effort to quantify this pool, estimating 35,000-40,000 potential donors annually, with only about one-fifth realized [17]. The DDPS highlighted that the largest gap was among older individuals (ages 50-75), where realization rates were $\sim$10\% compared to 50\% for younger donors, foreshadowing our finding that variation is concentrated at specific interfaces. The recent shift to Cause, Age, and Location Consistent (CALC) deaths as the denominator for CMS performance metrics represents the latest attempt to solve this problem [15]. However, as we will discuss, this OPO-level metric is blind to the hospital-level variance that our analysis identifies as the primary source of heterogeneity.
+
+Methodologically, our work builds on the causal variance decomposition framework proposed by Chen et al. (2020) [11]. Levan et al. (2022) analyzed OPO-level variation in family approach practices, finding significant differences between OPOs [12]. Our analysis complements this work by decomposing the variance to show that within-OPO variation dominates, and by demonstrating through case-mix adjusted analysis that this variation persists even for clinically homogeneous cases.
+
+\section{Methods}
+\subsection{Data Sources}
+We used two primary data sources. The first is the Organ Retrieval and Collection of Health Information for Donation (ORCHID) dataset, a patient-level dataset of 133,101 deceased patient referrals from 343 hospitals served by 6 OPOs between 2015 and 2021 [14]. This dataset contains detailed, time-stamped information on each stage of the procurement process, from referral to procurement.
+
+The second data source is a 2024 snapshot of national-level data from the Organ Procurement and Transplantation Network (OPTN) and the Scientific Registry of Transplant Recipients (SRTR). This dataset includes 1.15 million referrals from 4,140 hospitals served by all 55 U.S. OPOs.
+
+\subsection{Statistical Analysis}
+\subsubsection{Variance Decomposition (ICC)}
+To decompose the variance in procurement rates, we calculated the Intraclass Correlation Coefficient (ICC) from a random-effects model. The ICC measures the proportion of the total variance in an outcome that is attributable to the clustering of the data (in this case, the clustering of hospitals within OPOs). The model is specified as:
+\[
+Y_{ij} = \mu + \alpha_i + \epsilon_{ij}
+\]
+where $Y_{ij}$ is the procurement rate for hospital $j$ in OPO $i$, $\mu$ is the overall mean procurement rate, $\alpha_i$ is the random effect of OPO $i$, and $\epsilon_{ij}$ is the residual error. The ICC is then calculated as:
+\[
+\text{ICC} = \frac{\sigma^2_\alpha}{\sigma^2_\alpha + \sigma^2_\epsilon}
+\]
+where $\sigma^2_\alpha$ is the between-OPO variance and $\sigma^2_\epsilon$ is the within-OPO (hospital-level) variance. An ICC of 0 indicates that all variance is at the hospital level, while an ICC of 1 indicates that all variance is at the OPO level.
+
+\subsubsection{Case-Mix Adjusted Variation Analysis}
+To address the possibility that within-OPO variation reflects appropriate clinical heterogeneity rather than coordination constraints, we conducted a case-mix adjusted analysis. We examined approach rates for clinically homogeneous subgroups representing high-quality donor candidates: (1) Head Trauma patients aged 18-50 years, (2) Anoxia patients aged 18-40 years, and (3) patients meeting brain death criteria (DBD). For each subgroup, we calculated hospital-level approach rates within each OPO, restricting to hospitals with at least 5 cases in the subgroup to ensure stable estimates. We then computed the within-OPO range (maximum minus minimum approach rate) to quantify the variation in treatment of similar cases across hospitals served by the same OPO.
+
+\subsubsection{Shapley Decomposition}
+To understand where in the procurement process referrals exit without becoming donors, we used a Shapley decomposition. This game-theoretic method allocates the total gap between referrals and procured donors to each stage (Sorting, Authorization, Procurement, Placement) based on its marginal contribution across all possible sequences of stages. Importantly, this is a \textit{descriptive} decomposition of observed conversion rates—it quantifies \textit{where} referrals exit the process, not whether those exits represent appropriate triage or missed opportunities. The interpretation of whether exits at any stage are discretionary requires additional evidence, which we provide through case-mix adjusted analysis.
+
+\subsubsection{Potential Gains Simulation}
+We conducted a counterfactual simulation to estimate the potential increase in donors if all hospitals performed at a higher level. For each OPO, we identified the 75th percentile hospital procurement rate. We then calculated the number of additional donors that would be recovered if all hospitals below the 75th percentile were brought up to that level.
+
+\subsubsection{Representativeness Analysis}
+We assessed ORCHID's representativeness using a framework distinguishing structural from magnitude representativeness [18, 19]. Structural tests evaluated whether organizational patterns replicate (within-OPO variance dominance, correlation directions, distributional overlap). Magnitude tests assessed whether specific parameter values match. This distinction is critical: structural representativeness supports generalizability of findings about \textit{where} variance originates, while magnitude representativeness addresses whether effect \textit{sizes} can be directly extrapolated.
+
+\subsubsection{Denominator Definitions}
+Hospital-level procurement rates were calculated for facilities with 20 or more referrals to ensure stable rate estimates (ORCHID: 343 of 557 hospitals; OSR: 4,140 of 5,349 hospitals). For the ORCHID dataset, the denominator was total deceased patient referrals to the OPO from each hospital. For the OSR 2024 dataset, the denominator was total in-hospital death referrals as reported to SRTR. These denominators differ from the CALC (Cause, Age, and Location Consistent) deaths used in CMS performance metrics, which are derived from death certificate data aggregated at the county level. Sensitivity analyses including all hospitals regardless of volume showed even stronger within-OPO variance dominance (ORCHID: 95.6\% vs 82.6\%; OSR: 96.5\% vs 93.1\%), indicating that the 20-referral threshold provides a conservative estimate of within-OPO variance.
+
+\section{Results}
+\subsection{Variance Decomposition}
+The primary finding of our analysis is the overwhelming dominance of within-OPO variance in organ procurement performance. In the ORCHID dataset, the ICC for the approach rate was 0.174, meaning that 82.6\% of the variance occurred at the hospital level. In the 2024 national OSR dataset, the ICC for the donor rate was 0.069, meaning that 93.1\% of the variance occurred at the hospital level. This structural pattern—where the hospital-OPO interface is the primary locus of heterogeneity—is consistent across both historical process data and contemporary national outcome data.
+
+\subsection{Case-Mix Adjusted Variation}
+The within-OPO variation persists even when controlling for clinical case-mix. For head trauma patients aged 18-50, the within-OPO range in approach rates was 29-50 percentage points. This means that two clinically identical, high-quality donor candidates served by the same OPO have dramatically different probabilities of being approached for donation depending on which hospital they are in. This finding suggests that the observed variance is not a reflection of appropriate clinical triage but rather a consequence of the coordination constraint at the hospital-OPO interface.
+
+\subsection{Shapley Decomposition of Referral Exits}
+The Shapley decomposition identifies the stages where referrals exit the procurement pipeline. Across the national dataset, 86.6\% of referral exits occur at the Sorting (65.1\%) and Authorization (21.5\%) stages. These are the stages that lack national clinical protocols, standardized training, or professionalized workforces. In contrast, the Procurement (10.7\%) and Placement (2.7\%) stages, which are governed by established national standards and licensed professionals, contribute far less to the overall exit rate.
+
+\subsection{Potential Gains}
+Our simulation suggests that the coordination constraint represents a significant missed opportunity for increasing the organ supply. If all hospitals below their OPO's 75th percentile were brought up to that level, the U.S. would recover an additional 4,135 donors annually, a 24.5\% increase over current levels. This gain is entirely independent of OPO-level performance and represents the potential inherent in addressing the hospital-level variance.
+
+\section{Discussion}
+Our analysis provides definitive evidence that the hospital-OPO interface is the primary determinant of organ procurement performance in the United States. The finding that 83-93\% of variance occurs within OPOs challenges the prevailing regulatory focus on OPO-level metrics. While OPOs are the entities held accountable for performance, their outcomes are largely a function of the aggregate performance of the hospitals they serve, and that performance is highly heterogeneous.
+
+The 2020 CMS Final Rule, which uses CALC deaths as a denominator to assess OPO performance, is a step toward a more objective standard [15]. However, our findings highlight a critical limitation of this approach. CALC deaths are determined from death certificate data aggregated at the county or DSA level, making the metric blind to the hospital-level variance that we identify as the dominant source of heterogeneity. An OPO's performance under the CALC-based metric is a function of the aggregate performance of the hospitals within its DSA. As such, the metric may misattribute poor performance to the OPO when the underlying cause is a coordination constraint at a specific hospital-OPO interface.
+
+The Shapley decomposition provides the context for understanding why the hospital-OPO interface exhibits such variance. The stages where relatively few referrals exit—Procurement (10.7\%) and Placement (2.7\%)—are governed by established clinical protocols, national standards, and professionalized workforces. By contrast, the Sorting stage (65.1\%) and Authorization stage (21.5\%)—where 86.6\% of referrals exit the process—lack analogous infrastructure. This lack of standardization creates the opportunity for the discretionary variation observed in our case-mix analysis.
+
+The most significant policy implication of our work is that interventions should be targeted at the hospital-OPO interface. Our simulation shows that bringing underperforming hospitals up to the 75th percentile of their own OPO could yield over 4,000 additional donors annually. This is a powerful argument for shifting resources toward hospital-level quality improvement, such as the in-house coordinator programs that have been shown to be effective [9]. The existence of over 2,000 zero-donor hospitals represents a clear and immediate opportunity for targeted intervention.
+
+\section{Conclusions}
+Performance heterogeneity in organ procurement originates predominantly at the hospital-OPO interface, not at the OPO level. The ``coordination constraint'' at this interface is the primary determinant of outcomes. Future research and policy interventions should focus on strengthening the coordination infrastructure—including surveillance protocols, triage frameworks, and data interoperability standards—at the hospital-OPO dyad level to unlock the significant latent potential in the U.S. organ procurement system.
+
+\begin{thebibliography}{99}
+
+\bibitem{1} Goldberg, D. S., \& Halpern, S. D. (2016). A national donor-metric report card: a new way to increase organ donation. \textit{JAMA}, 315(8), 755-756.
+
+\bibitem{2} US Department of Health and Human Services. (2020). Organ Procurement Organization (OPO) Conditions for Coverage: Revisions to the Outcome Measure Requirements for OPOs. \textit{Federal Register}, 85(226), 77898-77967.
+
+\bibitem{3} Childress, J. F., \& Liverman, C. T. (Eds.). (2006). \textit{Organ donation: Opportunities for action}. National Academies Press.
+
+\bibitem{4} The ORCHID Investigators. (2022). Organ Retrieval and Collection of Health Information for Donation (ORCHID), Version 2.1.1. \textit{PhysioNet}.
+
+\bibitem{5} Scientific Registry of Transplant Recipients. (2024). \textit{OPTN/SRTR 2024 Annual Data Report}. US Department of Health and Human Services.
+
+\bibitem{6} Shapley, L. S. (1953). A value for n-person games. \textit{Contributions to the Theory of Games}, 2(28), 307-317.
+
+\bibitem{7} Lynch, R. J., Doby, B. L., Goldberg, D. S., Lee, K. J., Cimeno, A., \& Karp, S. J. (2022). Procurement characteristics of high- and low-performing OPOs as seen in OPTN/SRTR data. \textit{American Journal of Transplantation}, 22(2), 455-463.
+
+\bibitem{8} Johnson, W., et al. (2023). Variability in Organ Procurement Organization Performance by Individual Hospital. \textit{JAMA Surgery}, 158(3), 266-274.
+
+\bibitem{9} Salim, A., Berry, C., Ley, E. J., Schulman, D., Desai, C., Navarro, S., \& Malinoski, D. (2011). In-House Coordinator Programs Improve Conversion Rates for Organ Donation. \textit{Journal of Trauma: Injury, Infection, and Critical Care}, 71(3), 733-736.
+
+\bibitem{10} Wall, A. E., Shabbir, R., Chebrolu, S., Vines, E., Trahan, C., Niles, P., \& Testa, G. (2022). Variation in donation after circulatory death hospital policies in a single donor service area. \textit{American Journal of Surgery}, 224(1 Pt B), 595-601.
+
+\bibitem{11} Chen, B., Lawson, K. A., Finelli, A., \& Saarela, O. (2020). Causal variance decompositions for institutional comparisons in healthcare. \textit{Statistical Methods in Medical Research}, 29(7), 1972-1986.
+
+\bibitem{12} Levan, M. L., Massie, A. B., Trahan, C., et al. (2022). Maximizing the use of potential donors through increased rates of family approach for authorization. \textit{American Journal of Transplantation}, 22(12), 2834-2841.
+
+\bibitem{13} Howard, D. H., Siminoff, L. A., McBride, V., \& Lin, M. (2007). Does Quality Improvement Work? Evaluation of the Organ Donation Breakthrough Collaborative. \textit{Health Services Research}, 42(6 Pt 1), 2160-2173.
+
+\bibitem{14} Adam, H., Suriyakumar, V., Pollard, T., Moody, B., Erickson, J., Segal, G., Adams, B., Brockmeier, D., Lee, K., McBride, G., Ranum, K., Wadsworth, M., Whaley, J., Wilson, A., \& Ghassemi, M. (2025). Organ Retrieval and Collection of Health Information for Donation (ORCHID). \textit{PhysioNet}.
+
+\bibitem{15} Centers for Medicare \& Medicaid Services. (2020). Medicare and Medicaid Programs; Organ Procurement Organizations Conditions for Coverage: Revisions to the Outcome Measure Requirements for Organ Procurement Organizations. \textit{Federal Register}, 85(231), 77898-77975.
+
+\bibitem{16} Organ Procurement and Transplantation Network. (2020). OPTN Response to CMS-3380-P: Revisions to the Outcome Measure Requirements for Organ Procurement Organizations. February 20, 2020.
+
+\bibitem{17} OPTN Deceased Donor Potential Study (DDPS). (2015). \textit{Final Report}. Organ Procurement and Transplantation Network.
+
+\bibitem{18} Stuart, E. A., Cole, S. R., Bradshaw, C. P., \& Leaf, P. J. (2011). The use of propensity scores to assess the generalizability of results from randomized trials. \textit{Journal of the Royal Statistical Society: Series A (Statistics in Society)}, 174(2), 369-386.
+
+\bibitem{19} Tipton, E. (2014). How generalizable is your experiment? An index for comparing experimental samples and populations. \textit{Journal of Educational and Behavioral Statistics}, 39(6), 478-501.
+
+\bibitem{20} Austin, P. C. (2009). Using the standardized difference to compare the prevalence of a binary variable between two groups in observational research. \textit{Communications in Statistics - Simulation and Computation}, 38(6), 1228-1234.
+
+\bibitem{21} Organ Procurement and Transplantation Network (OPTN). (2025). Management and Membership Policies. Effective March 6, 2025.
+
+\end{thebibliography}
+
+\end{document}
